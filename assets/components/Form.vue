@@ -1,26 +1,30 @@
 <template>
-<div class="centerer white-col">
+<section class="">
+  <div class="centerer white-col">
+  <div class="message text-center mt-2" v-bind:class="[messageStatus]">
+    Ticket created succesfully.
+  </div>
   <form v-on:submit.prevent>
     <div class="columns">
       <div class="form-group column col-6">
         <label class="form-label" for="input-name">Name</label>
-        <input class="btn-borderless form-input" v-model="name" type="text" name="name" id="input-name" />
+        <input class="btn-borderless form-input" v-model="name" type="text" name="name" id="input-name" :disabled="disabledStatus"/>
       </div>
 
       <div class=" column col-6 form-group">
         <label class="form-label" for="input-email">Email Address</label>
-        <input class="btn-borderless form-input" v-model="email_address" type="email_address" name="email_address" id="input-email" />
+        <input class="btn-borderless form-input" v-model="email_address" type="email_address" name="email_address" id="input-email" :disabled="disabledStatus" />
       </div>
     </div>
   
   <div class="form-group">
     <label class="form-label" for="input-name">Subject</label>
-    <input class="btn-borderless form-input" v-model="subject" type="text" name="subject" id="input-subject" />
+    <input class="btn-borderless form-input" v-model="subject"  type="text" name="subject" id="input-subject" :disabled="disabledStatus" />
   </div>
 
   <div class="form-group">
     <label class="form-label" for="input-email">Department</label>
-    <select class="btn-borderless w-316 form-select" name="department" v-model="department">
+    <select class="btn-borderless w-316 form-select" name="department" v-model="department" :disabled="disabledStatus">
       <option>Customer Support</option>
       <option>Facebook</option>
       <option>Twitter</option>
@@ -30,16 +34,21 @@
 
     <div class="form-group">
       <label class="form-label" for="input-example-20">Message</label>
-      <textarea class="btn-borderless form-input" id="input-example-20" name="message" v-model="message" placeholder="type something" rows="7"></textarea>
+      <textarea class="btn-borderless form-input" id="input-example-20" name="message" v-model="message" placeholder="type something" rows="7" :disabled="disabledStatus">
+      </textarea>
     </div>
 
  
   <div class="form-group flex-end mTop-35">
-    <button class="btn-borderless navy-text btn w-113_4" @click="toggleForm">Cancel</button>
+    <button class="btn-borderless navy-text btn w-113_4">
+      <a href="/">Cancel</a>
+      </button>
     <button class="btn-borderless btn w-113_4 white-text navy-col" @click="processForm" type="submit">Submit</button>
   </div>
 </form>
 </div>
+</section>
+
 
 </template>
 
@@ -48,6 +57,7 @@ import axios from 'axios';
 
 export default {
 name:  "Form",
+
 data(){
   return{
       name: "",
@@ -57,7 +67,9 @@ data(){
       message: "",
       assignee: "",
       status: "",
-      showForm: true
+      formStatus: true,
+      messageStatus: "hidden",
+      disabledStatus: false
     }
   },
   methods:{
@@ -66,8 +78,8 @@ data(){
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
       });
-    },
-    processForm(){
+      },
+      processForm(){
       var url = '/api/tickets'
       let csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
@@ -83,18 +95,20 @@ data(){
           refNo: this.uuidv4()
         }
       }
+      console.log(newTicket)
       axios.post( url, newTicket, { headers: {'Content-Type': 'application/json', '_csrf_token': csrf }})
       .then((response) =>{
-        // console.log(response.data)
+        this.disabledStatus = true
+        this.messageStatus = "visible"
+        setTimeout((cb =>{
+          window.location.href = '/';
+        }),2000)
       })
     },
-
-    toggleForm: function(){
-      this.$emit('toggleForm', this.showForm);
+      destroyed() {
+      this.$destroy() 
+      console.log(this)
     }
-  },
-  mounted() {
-    // this.uuidv4()
   } 
 }
 </script>
@@ -124,5 +138,11 @@ width: 716px;
 }
 .mTop-35{
   margin-top: 35px;
+}
+.hidden{
+  display: none;
+}
+.visible{
+  display: block;
 }    
 </style>
