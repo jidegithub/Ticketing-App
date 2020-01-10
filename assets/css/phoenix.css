@@ -7,7 +7,9 @@
  */
 
 *,*:after,*:before{box-sizing:inherit}
-html{box-sizing:border-box;font-size:62.5%}
+html{box-sizing:border-box;font-size:62.5%;
+  /* background-color: #f9f9f9!important; */
+}
 body{
   color:#000000;
   background-color: #f9f9f9!important;
@@ -36,7 +38,7 @@ textarea,select{
   background-color: #eeeeee!important;
 }
 .white-col{
-  background-color: white;
+  background-color: white!important;
 }
 .white-text{
   color: white!important;
@@ -52,14 +54,23 @@ textarea,select{
   display: flex;
   justify-content: space-between;
 }
+.flex{
+  display: flex;
+}
+.flexAlignCenter{
+  align-items: center;
+}
 .form-input, .form-select{
   background-color: #eeeeee!important;
 }
 .form-group label.form-label{
   font-size: 14px;
 }
-.mL{
-  margin-left: 32px;
+.mL-10{
+  margin-left: 10px;
+}
+.pR-10{
+  padding-right:10px;
 }
 
 /* General style */

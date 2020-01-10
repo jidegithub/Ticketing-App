@@ -2,9 +2,8 @@ defmodule Tick.Repo.Migrations.CreateTickets do
   use Ecto.Migration
 
   def change do
-    execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";")
     create table(:tickets) do
-      add :refNo, :uuid, default: fragment("uuid_generate_v4()")
+      add :refNo, :string
       add :subject, :string
       add :name, :string
       add :assignee, :string

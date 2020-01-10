@@ -7,7 +7,7 @@ defmodule Tick.Customer.Ticket do
     field :status, :string
     field :subject, :string
     field :name, :string
-    field :refNo, Ecto.UUID, autogenerate: true
+    field :refNo, :string
     field :email_address, :string
 
     timestamps()

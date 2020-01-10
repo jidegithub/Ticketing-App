@@ -24,8 +24,8 @@
           </div>
 
           <div class="table-container white-col">
-            <Form></Form> 
-            <!-- <Details></Details> -->
+            <Details></Details>
+            
           </div>
         </div>
       </div>
@@ -33,16 +33,15 @@
 </template>
 
 <script>
-import Form from "./Form.vue";
-import Details from "./Details.vue"
+import Details from "./Details.vue";
 export default {
+  name: "App",
   data(){
     return{
       tickets: []
     }
   },
   components: {
-    Form,
     Details
   }
 }

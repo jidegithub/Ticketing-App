@@ -1,5 +1,5 @@
 <template>
-<div class="centerer">
+<div class="centerer white-col">
   <form v-on:submit.prevent>
     <div class="columns">
       <div class="form-group column col-6">
@@ -35,7 +35,7 @@
 
  
   <div class="form-group flex-end mTop-35">
-    <button class="btn-borderless navy-text btn w-113_4">Cancel</button>
+    <button class="btn-borderless navy-text btn w-113_4" @click="toggleForm">Cancel</button>
     <button class="btn-borderless btn w-113_4 white-text navy-col" @click="processForm" type="submit">Submit</button>
   </div>
 </form>
@@ -48,7 +48,6 @@ import axios from 'axios';
 
 export default {
 name:  "Form",
-
 data(){
   return{
       name: "",
@@ -58,25 +57,21 @@ data(){
       message: "",
       assignee: "",
       status: "",
-      identifier:""
+      showForm: true
     }
   },
   methods:{
       uuidv4() {
       return 'ABC-xxxx-ABC-yxxx-xxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        const id = v.toString(16);
-        id = this.identifier
-        return id
+        return v.toString(16);
       });
     },
     processForm(){
-      // axios.put( url, data, { headers: {'Content-Type': 'application/json', 'x-csrf-token': csrf}})
-
       var url = '/api/tickets'
       let csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
-      var ticky = {      
+      var newTicket = {      
         ticket: {
           name: this.name,
           subject: this.subject,
@@ -85,27 +80,21 @@ data(){
           message: this.message,
           assignee: "quadri",
           status: "done",
-          refNo: this.identifier
+          refNo: this.uuidv4()
         }
       }
-    console.log(ticky, csrf)
-      axios.post( url, ticky, { headers: {'Content-Type': 'application/json', '_csrf_token': csrf }})
+      axios.post( url, newTicket, { headers: {'Content-Type': 'application/json', '_csrf_token': csrf }})
       .then((response) =>{
         // console.log(response.data)
       })
+    },
 
-      // axios.get("api/tickets")
-      // .then((res)=>{
-      //   console.log(res)
-      // })
-      // .catch(err=>{
-      //   console.log(err)
-      // })
+    toggleForm: function(){
+      this.$emit('toggleForm', this.showForm);
     }
   },
   mounted() {
-    this.uuidv4()
-    console.log('yaay!')
+    // this.uuidv4()
   } 
 }
 </script>
