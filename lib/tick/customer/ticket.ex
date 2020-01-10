@@ -18,7 +18,7 @@ defmodule Tick.Customer.Ticket do
     ticket
     |> cast(attrs, [:refNo, :subject, :name, :assignee, :status, :email_address])
     |> validate_required([:refNo, :subject, :name, :assignee, :status, :email_address])
-    |> unique_constraint(:name)
+    |> unique_constraint([:email_address, :refNo])
   end
 
   # defp add_refno(changeset)  do

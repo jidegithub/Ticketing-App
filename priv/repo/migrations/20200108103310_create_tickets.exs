@@ -13,6 +13,6 @@ defmodule Tick.Repo.Migrations.CreateTickets do
       timestamps()
     end
 
-    create unique_index(:tickets, [:name])
+    create unique_index(:tickets, [:email_address, :refNo])
   end
 end
